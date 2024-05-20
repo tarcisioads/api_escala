@@ -5,17 +5,17 @@ import (
   "time"
 )
 
-type Ministry struct {
+type Member struct {
   gorm.Model
   Name string
-  Members []Member `gorm:"many2many:members_ministries;"`
+  Ministry []*Ministry `gorm:"many2many:membros_ministries;"`
 }
 
-type MinistryResponse struct {
+type MemberResponse struct {
   ID uint `json:"id"`
   CreatedAt time.Time `json:"created_at"`
   UpdatedAt time.Time `json:"updated_at"`
   DeletedAt time.Time `json:"deleted_at"`
   Name string `json:"name"`
-  Members []MemberResponse `json:"members"`
+  Ministries []MinistryResponse `json:"ministries"`
 }

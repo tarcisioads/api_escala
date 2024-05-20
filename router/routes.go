@@ -22,6 +22,12 @@ func initializeRoutes(router *gin.Engine) {
     v1.PUT("/ministry/:id", handler.UpdateMinistryHandler)
     v1.DELETE("/ministry/:id", handler.DeleteMinistryHandler)
     v1.GET("/ministries", handler.ListMinistriesHandler)
+
+    v1.GET("/member/:id", handler.ShowMemberHandler)
+    v1.POST("/member", handler.CreateMemberHandler)
+    v1.PUT("/member/:id", handler.UpdateMemberHandler)
+    v1.DELETE("/member/:id", handler.DeleteMemberHandler)
+    v1.GET("/members", handler.ListMembersHandler)
  
   }
 

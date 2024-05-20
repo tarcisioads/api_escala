@@ -16,6 +16,13 @@ func initializeRoutes(router *gin.Engine) {
     v1.PUT("/escala/:id", handler.UpdateEscalaHandler)
     v1.DELETE("/escala/:id", handler.DeleteEscalaHandler)
     v1.GET("/escalas", handler.ListEscalasHandler)
+
+    v1.GET("/ministry/:id", handler.ShowMinistryHandler)
+    v1.POST("/ministry", handler.CreateMinistryHandler)
+    v1.PUT("/ministry/:id", handler.UpdateMinistryHandler)
+    v1.DELETE("/ministry/:id", handler.DeleteMinistryHandler)
+    v1.GET("/ministries", handler.ListMinistriesHandler)
+ 
   }
 
 }

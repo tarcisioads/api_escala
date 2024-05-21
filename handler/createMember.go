@@ -24,7 +24,7 @@ func CreateMemberHandler(ctx *gin.Context) {
 	}
 
 	if err := db.Create(&member).Error; err != nil {
-		logger.Errorf("error creating escala: %v", err.Error())
+		logger.Errorf("error creating member: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "error creating member on database")
 		return
 	}

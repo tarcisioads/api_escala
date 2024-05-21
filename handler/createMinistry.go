@@ -19,12 +19,27 @@ func CreateMinistryHandler(ctx *gin.Context) {
 		return
 	}
 
+  members := []schemas.Member{}
+  for _, name := range request.Members {
+    member := schemas.Member{}
+    if err := db.Where("name = ?", *name).First(&member).Error; err != nil {
+      member.Name = *name
+      if err := db.Create(&member).Error; err != nil {
+        logger.Errorf("error creating member: %v", err.Error())
+        sendError(ctx, http.StatusInternalServerError, "error creating member on database")
+        return
+      }
+    }
+    members = append(members, member)
+  }
+
 	ministry := schemas.Ministry{
     Name: request.Name,
+    Members: members,
 	}
 
 	if err := db.Create(&ministry).Error; err != nil {
-		logger.Errorf("error creating escala: %v", err.Error())
+		logger.Errorf("error creating ministry: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "error creating ministry on database")
 		return
 	}

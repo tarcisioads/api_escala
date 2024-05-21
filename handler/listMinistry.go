@@ -10,7 +10,7 @@ import (
 func ListMinistriesHandler(ctx *gin.Context) {
 	ministries := []schemas.Ministry{}
 
-	if err := db.Find(&ministries).Error; err != nil {
+	if err := db.Model(&schemas.Ministry{}).Preload("Members").Find(&ministries).Error; err != nil {
 		sendError(ctx, http.StatusInternalServerError, "error listing ministries")
 		return
 	}

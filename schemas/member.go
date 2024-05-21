@@ -8,7 +8,7 @@ import (
 type Member struct {
   gorm.Model
   Name string
-  Ministry []*Ministry `gorm:"many2many:membros_ministries;"`
+  Ministries []*Ministry `gorm:"many2many:members_ministries;"`
 }
 
 type MemberResponse struct {

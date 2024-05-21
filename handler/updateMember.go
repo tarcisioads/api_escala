@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/tarcisioads/api_escala/schemas"
 	"github.com/gin-gonic/gin"
+	"github.com/tarcisioads/api_escala/schemas"
 )
 
 func UpdateMemberHandler(ctx *gin.Context) {

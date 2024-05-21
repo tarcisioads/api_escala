@@ -14,7 +14,8 @@ func ShowMinistryHandler(ctx *gin.Context) {
 		return
 	}
 	ministry := schemas.Ministry{}
-	if err := db.First(&ministry, id).Error; err != nil {
+
+	if err := db.Model(&schemas.Ministry{}).Preload("Members").First(&ministry, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, "ministry not found")
 		return
 	}

@@ -25,14 +25,31 @@ func UpdateMinistryHandler(ctx *gin.Context) {
 	}
 	ministry := schemas.Ministry{}
 
-	if err := db.First(&ministry, id).Error; err != nil {
+	if err := db.Model(&schemas.Ministry{}).Preload("Members").First(&ministry, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, "ministry not found")
 		return
 	}
+
+  members := []schemas.Member{}
+  for _, name := range request.Members {
+    member := schemas.Member{}
+    if err := db.Where("name = ?", *name).First(&member).Error; err != nil {
+      member.Name = *name
+      if err := db.Create(&member).Error; err != nil {
+        logger.Errorf("error creating member: %v", err.Error())
+        sendError(ctx, http.StatusInternalServerError, "error creating member on database")
+        return
+      }
+    }
+    members = append(members, member)
+  }
+
 	// Update ministry
 	if request.Name != "" {
 		ministry.Name = request.Name
 	}
+
+  ministry.Members = members
 
 	// Save ministry
 	if err := db.Save(&ministry).Error; err != nil {

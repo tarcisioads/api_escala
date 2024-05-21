@@ -14,7 +14,7 @@ func ShowMemberHandler(ctx *gin.Context) {
 		return
 	}
 	member := schemas.Member{}
-	if err := db.First(&member, id).Error; err != nil {
+	if err := db.Model(&schemas.Member{}).Preload("Ministries").First(&member, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, "member not found")
 		return
 	}

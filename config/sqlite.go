@@ -7,9 +7,27 @@ import (
   "gorm.io/gorm"
 )
 
-func InitializeSQLite() (*gorm.DB, error) {
+const (
+  dbDefaultPath = "./db/main.db"
+  dbTestPath = "./db/test.db"
+)
+
+func InitializeSQLite(mode string) (*gorm.DB, error) {
   logger := GetLogger("sqlite")
-  dbPath := "./db/main.db"
+  logger.Info("database finding...")
+  dbPath := dbDefaultPath
+  switch mode {
+    case TestMode:
+      dbPath = dbTestPath
+      _, err := os.Stat(dbPath)
+      if !os.IsNotExist(err) {
+        err := os.Remove(dbPath)
+        if err != nil {
+          logger.Errorf("sqlite test error: %v", err)
+          return nil, err
+        }
+      } 
+  }
 
   _, err := os.Stat(dbPath)
   if os.IsNotExist(err) {

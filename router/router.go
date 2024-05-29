@@ -2,7 +2,6 @@ package router
 
 import (
 	"os"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,3 +18,5 @@ func Initialize() {
 
   router.Run("0.0.0.0:" + port)
 }
+
+

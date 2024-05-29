@@ -1,29 +1,29 @@
 package handler
 
 import (
-	"bytes"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"bytes"
+  "encoding/json"
   "github.com/stretchr/testify/assert"
 	"github.com/tarcisioads/api_escala/config"
 )
 
 
-func TestCreateMinistryHandler(t *testing.T) {
+func TestListMinistryHandler(t *testing.T) {
   config.Init(config.TestMode)
 	router := SetUpMockRouter()
-	basePath := "/api/v1"
+	basePath := config.GetBasePath() 
   v1 := router.Group(basePath)
   {
     v1.POST("/ministry", CreateMinistryHandler)
+    v1.GET("/ministry/:id", UpdateMinistryHandler)
   }
   InitializeHandler()
 
 
-  t.Run("Should create a new ministry", func(t *testing.T) {
-
+  t.Run("Should get list ministries", func(t *testing.T) {
     members := []string{"John"}
 
     ministry := CreateMinistryRequest{
@@ -38,29 +38,22 @@ func TestCreateMinistryHandler(t *testing.T) {
     w := httptest.NewRecorder()
     router.ServeHTTP(w, req)
 
-    assert.Equal(t, http.StatusOK, w.Code)
-
-  });
-
-  t.Run("Should not create a new ministry", func(t *testing.T) {
-
-    ministry := CreateMinistryRequest{
-      Name: "",
-      Members: nil,
-    }
-  
-    jsonData, _ := json.Marshal(ministry) 
-    reqBody := bytes.NewBuffer(jsonData)
-  
-    req, _ := http.NewRequest("POST", basePath+"/ministry", reqBody)
-    w := httptest.NewRecorder()
-    router.ServeHTTP(w, req)
-  
-    assert.Equal(t, http.StatusBadRequest, w.Code)
-
+    reqGet, _ := http.NewRequest("GET", basePath+"/ministries", reqBody)
+    wGet := httptest.NewRecorder()
+    router.ServeHTTP(wGet, reqGet)
+    
+    assert.Equal(t, http.StatusOK, wGet.Code)
   })
 
 
-  }
+  t.Run("Should not list a ministries", func(t *testing.T) {
+    req, _ := http.NewRequest("GET", basePath+"/ministries", nil)
+    w := httptest.NewRecorder()
+    router.ServeHTTP(w, req)
+    assert.Equal(t, http.StatusNotFound, w.Code)
+  })
+
+
+}
 
 

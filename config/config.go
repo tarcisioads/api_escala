@@ -9,6 +9,7 @@ import (
 var (
   db *gorm.DB
   logger *Logger
+  basePath string
 )
 
 const (
@@ -23,6 +24,9 @@ func Init(mode string) error {
     default:
       mode = ProductionMode 
   }
+
+	basePath = "/api/v1"
+
   var err error
   db, err = InitializeSQLite(mode)
 
@@ -41,4 +45,8 @@ func GetSQLite() *gorm.DB {
 func GetLogger(name string) *Logger {
   logger = NewLogger(name)
   return logger
+}
+
+func GetBasePath() string {
+  return basePath
 }

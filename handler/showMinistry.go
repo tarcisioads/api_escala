@@ -10,15 +10,15 @@ import (
 func ShowMinistryHandler(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "paramParameter").Error())
+		SendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "paramParameter").Error())
 		return
 	}
 	ministry := schemas.Ministry{}
 
 	if err := db.Model(&schemas.Ministry{}).Preload("Members").First(&ministry, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "ministry not found")
+		SendError(ctx, http.StatusNotFound, "ministry not found")
 		return
 	}
 
-	sendSuccess(ctx, "show-ministry", ministry)
+	SendSuccess(ctx, "show-ministry", ministry)
 }

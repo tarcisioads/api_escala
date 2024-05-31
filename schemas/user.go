@@ -7,7 +7,7 @@ import (
 
 type User struct {
   gorm.Model
-  Username string
+  Email string `gorm:"unique"`
   Password string
 }
 
@@ -16,6 +16,6 @@ type UserResponse struct {
   CreatedAt time.Time `json:"created_at"`
   UpdatedAt time.Time `json:"updated_at"`
   DeletedAt time.Time `json:"deleted_at"`
-  Username string `json:"username"`
+  Email string `json:"email"`
   Password string `json:"password"`
 }

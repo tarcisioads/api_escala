@@ -2,6 +2,7 @@ package router
 
 import (
   "github.com/tarcisioads/api_escala/handler"
+  "github.com/tarcisioads/api_escala/middleware"
   "github.com/gin-gonic/gin"
 )
 
@@ -11,6 +12,11 @@ func initializeRoutes(router *gin.Engine) {
   basePath := "/api/v1"
   v1 := router.Group(basePath)
   {
+    v1.POST("/signin", handler.SigninHandler)
+    v1.POST("/signup", handler.SignupHandler)
+
+    v1.GET("/validate", middleware.RequireAuth, handler.ValidateHandler)
+
     v1.GET("/escala/:id", handler.ShowEscalaHandler)
     v1.POST("/escala", handler.CreateEscalaHandler)
     v1.PUT("/escala/:id", handler.UpdateEscalaHandler)

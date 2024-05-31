@@ -11,9 +11,9 @@ func ListMinistriesHandler(ctx *gin.Context) {
 	ministries := []schemas.Ministry{}
 
 	if err := db.Model(&schemas.Ministry{}).Preload("Members").Find(&ministries).Error; err != nil {
-		sendError(ctx, http.StatusInternalServerError, "error listing ministries")
+		SendError(ctx, http.StatusInternalServerError, "error listing ministries")
 		return
 	}
 
-	sendSuccess(ctx, "list-ministries", ministries)
+	SendSuccess(ctx, "list-ministries", ministries)
 }

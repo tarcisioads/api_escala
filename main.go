@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/tarcisioads/api_escala/config"
+	"github.com/tarcisioads/api_escala/initializers"
 	"github.com/tarcisioads/api_escala/router"
 )
 
@@ -9,8 +10,13 @@ var (
 	logger *config.Logger
 )
 
+func init() {
+  logger = config.GetLogger("main")
+  initializers.LoadEnvVariables()
+  initializers.InitializeDB()
+}
+
 func main() {
-	logger = config.GetLogger("main")
 	// Initialize Configs
 	err := config.Init(config.ProductionMode)
 	if err != nil {

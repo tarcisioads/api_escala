@@ -15,7 +15,7 @@ func CreateMemberHandler(ctx *gin.Context) {
 	logger.Infof("request body : %v", request)
 	if err := request.Validate(); err != nil {
 		logger.Errorf("validation error: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -25,9 +25,9 @@ func CreateMemberHandler(ctx *gin.Context) {
 
 	if err := db.Create(&member).Error; err != nil {
 		logger.Errorf("error creating member: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error creating member on database")
+		SendError(ctx, http.StatusInternalServerError, "error creating member on database")
 		return
 	}
 
-	sendSuccess(ctx, "create-member", member)
+	SendSuccess(ctx, "create-member", member)
 }

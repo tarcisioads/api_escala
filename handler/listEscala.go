@@ -11,9 +11,9 @@ func ListEscalasHandler(ctx *gin.Context) {
 	escalas := []schemas.Escala{}
 
 	if err := db.Find(&escalas).Error; err != nil {
-		sendError(ctx, http.StatusInternalServerError, "error listing escalas")
+		SendError(ctx, http.StatusInternalServerError, "error listing escalas")
 		return
 	}
 
-	sendSuccess(ctx, "list-escalas", escalas)
+	SendSuccess(ctx, "list-escalas", escalas)
 }

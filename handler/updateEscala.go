@@ -14,19 +14,19 @@ func UpdateEscalaHandler(ctx *gin.Context) {
 
 	if err := request.Validate(); err != nil {
 		logger.Errorf("validation error: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	id := ctx.Param("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "paramParameter").Error())
+		SendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "paramParameter").Error())
 		return
 	}
 	escala := schemas.Escala{}
 
 	if err := db.First(&escala, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "escala not found")
+		SendError(ctx, http.StatusNotFound, "escala not found")
 		return
 	}
 	// Update escala
@@ -49,8 +49,8 @@ func UpdateEscalaHandler(ctx *gin.Context) {
 	// Save escala
 	if err := db.Save(&escala).Error; err != nil {
 		logger.Errorf("error updating escala: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error updating escala")
+		SendError(ctx, http.StatusInternalServerError, "error updating escala")
 		return
 	}
-	sendSuccess(ctx, "update-escala", escala)
+	SendSuccess(ctx, "update-escala", escala)
 }

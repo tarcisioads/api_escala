@@ -15,7 +15,7 @@ func CreateMinistryHandler(ctx *gin.Context) {
 	logger.Infof("request body : %v", request)
 	if err := request.Validate(); err != nil {
 		logger.Errorf("validation error: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -26,7 +26,7 @@ func CreateMinistryHandler(ctx *gin.Context) {
       member.Name = *name
       if err := db.Create(&member).Error; err != nil {
         logger.Errorf("error creating member: %v", err.Error())
-        sendError(ctx, http.StatusInternalServerError, "error creating member on database")
+        SendError(ctx, http.StatusInternalServerError, "error creating member on database")
         return
       }
     }
@@ -40,9 +40,9 @@ func CreateMinistryHandler(ctx *gin.Context) {
 
 	if err := db.Create(&ministry).Error; err != nil {
 		logger.Errorf("error creating ministry: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error creating ministry on database")
+		SendError(ctx, http.StatusInternalServerError, "error creating ministry on database")
 		return
 	}
 
-	sendSuccess(ctx, "create-ministry", ministry)
+	SendSuccess(ctx, "create-ministry", ministry)
 }

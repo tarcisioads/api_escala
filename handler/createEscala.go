@@ -15,7 +15,7 @@ func CreateEscalaHandler(ctx *gin.Context) {
 	logger.Infof("request body : %v", request)
 	if err := request.Validate(); err != nil {
 		logger.Errorf("validation error: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -28,9 +28,9 @@ func CreateEscalaHandler(ctx *gin.Context) {
 
 	if err := db.Create(&escala).Error; err != nil {
 		logger.Errorf("error creating escala: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "error creating escala on database")
+		SendError(ctx, http.StatusInternalServerError, "error creating escala on database")
 		return
 	}
 
-	sendSuccess(ctx, "create-escala", escala)
+	SendSuccess(ctx, "create-escala", escala)
 }

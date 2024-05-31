@@ -10,14 +10,14 @@ import (
 func ShowMemberHandler(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "paramParameter").Error())
+		SendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "paramParameter").Error())
 		return
 	}
 	member := schemas.Member{}
 	if err := db.Model(&schemas.Member{}).Preload("Ministries").First(&member, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, "member not found")
+		SendError(ctx, http.StatusNotFound, "member not found")
 		return
 	}
 
-	sendSuccess(ctx, "show-member", member)
+	SendSuccess(ctx, "show-member", member)
 }
